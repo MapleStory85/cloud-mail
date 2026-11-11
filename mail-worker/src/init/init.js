@@ -5,9 +5,9 @@ import {emailConst} from "../const/entity-const";
 const dbInit = {
 	async init(c) {
 
-		const secret = c.req.param('secret');
+		const secret = c.req.param('secret') || c.req.header('X-Cloud-Mail-Init-Secret');
 
-		if (secret !== c.env.jwt_secret) {
+		if (!secret || !c.env.jwt_secret || secret !== c.env.jwt_secret) {
 			return c.text('❌ JWT secret mismatch');
 		}
 
